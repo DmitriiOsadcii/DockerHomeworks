@@ -1,0 +1,25 @@
+aws ec2 create-security-group \
+    --group-name 20250803-kamil-sg \
+    --description "Security Group for MySQL and HTTPS and SSH"
+
+aws ec2 authorize-security-group-ingress \
+    --group-id sg-092d4ec2208cc14a6 \
+    --protocol tcp \
+    --port 3306 \
+    --cidr 0.0.0.0/0 \
+    --tag-specifications 'ResourceType=security-group-rule,Tags=[{Key=Description,Value=mysql}]'
+
+aws ec2 authorize-security-group-ingress \
+    --group-id sg-092d4ec2208cc14a6 \
+    --protocol tcp \
+    --port 443 \
+    --cidr 0.0.0.0/0 \
+    --tag-specifications 'ResourceType=security-group-rule,Tags=[{Key=Description,Value=https}]'
+
+ 
+ aws ec2 describe-security-groups \
+    --group-ids sg-092d4ec2208cc14a6 \
+    --query 'SecurityGroups[*].IpPermissions' \
+    --output json
+  
+aws ec2 delete-security-group --group-id sg-092d4ec2208cc14a6
